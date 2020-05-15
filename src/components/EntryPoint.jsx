@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from '../context';
 import Header from './layout/Header';
 import AddContact from './contacts/AddContact';
+import EditContact from './contacts/EditContact';
 import Contacts from './contacts/Contacts';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
@@ -21,6 +22,7 @@ export default class EntryPoint extends React.PureComponent {
               <Switch>
                 <Route exact path="/" component={Contacts} />
                 <Route exact path="/contact/add" component={AddContact} />
+                <Route exact path="/contact/edit/:id" component={EditContact} />
                 <Route exact path="/about" component={About} />
                 <Route component={NotFound} />
               </Switch>

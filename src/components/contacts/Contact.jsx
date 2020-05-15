@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortDown, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSortDown, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Consumer } from '../../context';
 import axios from 'axios';
 
@@ -10,15 +11,19 @@ export default class Contact extends React.PureComponent {
     showContactInfo: false,
   };
 
-  onDeleteClick = (id, dispatch) => {
-    axios
-      .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
-      .then((res) =>
-        dispatch({
-          type: 'DELETE_CONTACT',
-          payload: id,
-        })
-      );
+  onDeleteClick = async (id, dispatch) => {
+    try {
+      await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+      dispatch({
+        type: 'DELETE_CONTACT',
+        payload: id,
+      });
+    } catch {
+      dispatch({
+        type: 'DELETE_CONTACT',
+        payload: id,
+      });
+    }
   };
 
   render() {
@@ -47,6 +52,17 @@ export default class Contact extends React.PureComponent {
                   onClick={this.onDeleteClick.bind(this, id, dispatch)}
                   style={{ cursor: 'pointer', float: 'right' }}
                 />
+                <Link to={`contact/edit/${id}`}>
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    color="blue"
+                    style={{
+                      cursor: 'pointer',
+                      float: 'right',
+                      marginRight: '1rem',
+                    }}
+                  />
+                </Link>
               </h4>
               {showContactInfo ? (
                 <ul className="list-group">

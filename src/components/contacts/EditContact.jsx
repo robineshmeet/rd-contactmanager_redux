@@ -4,13 +4,28 @@ import { Consumer } from '../../context';
 import TextInputGroup from '../layout/TextInputGroup';
 import axios from 'axios';
 
-export default class AddContact extends React.PureComponent {
+export default class EditContact extends React.PureComponent {
   state = {
     name: '',
     email: '',
     phone: '',
     errors: {},
   };
+
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const res = await axios.get(
+      `https://jsonplaceholder.typicode.com/users/${id}`
+    );
+
+    const contact = res.data;
+
+    this.setState({
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone,
+    });
+  }
 
   onSubmit = async (dispatch, e) => {
     e.preventDefault();
@@ -37,19 +52,21 @@ export default class AddContact extends React.PureComponent {
       return;
     }
 
-    const newContact = {
+    const updateContact = {
       name,
       email,
       phone,
     };
 
-    const res = await axios.post(
-      'https://jsonplaceholder.typicode.com/users',
-      newContact
+    const { id } = this.props.match.params;
+
+    const res = await axios.put(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+      updateContact
     );
 
     dispatch({
-      type: 'ADD_CONTACT',
+      type: 'UPDATE_CONTACT',
       payload: res.data,
     });
 
@@ -77,7 +94,7 @@ export default class AddContact extends React.PureComponent {
           const { dispatch } = value;
           return (
             <div className="card mb-3">
-              <div className="card-header">Add Contact</div>
+              <div className="card-header">Edit Contact</div>
               <div className="card-body">
                 <form onSubmit={this.onSubmit.bind(this, dispatch)}>
                   <TextInputGroup
@@ -107,7 +124,7 @@ export default class AddContact extends React.PureComponent {
                   />
                   <input
                     type="submit"
-                    value="Add Contact"
+                    value="Update Contact"
                     className="btn btn-light btn-block"
                   />
                 </form>
