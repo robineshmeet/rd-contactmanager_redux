@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from '../context';
 import Header from './layout/Header';
 import AddContact from './contacts/AddContact';
@@ -15,7 +15,7 @@ export default class EntryPoint extends React.PureComponent {
   render() {
     return (
       <Provider>
-        <Router basename={process.env.PUBLIC_URL}>
+        <Router>
           <div className="App">
             <Header branding="Contact Manager" />
             <div className="container">
