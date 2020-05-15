@@ -21,7 +21,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         contacts: state.contacts.map((contact) =>
-          contact.id === action.payload ? (contact = action.payload) : contact
+          contact.id === action.payload.id
+            ? (contact = action.payload)
+            : contact
         ),
       };
     default:
