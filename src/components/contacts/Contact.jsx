@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Consumer } from '../../context';
+import axios from 'axios';
 
 export default class Contact extends React.PureComponent {
   state = {
@@ -10,10 +11,14 @@ export default class Contact extends React.PureComponent {
   };
 
   onDeleteClick = (id, dispatch) => {
-    dispatch({
-      type: 'DELETE_CONTACT',
-      payload: id,
-    });
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((res) =>
+        dispatch({
+          type: 'DELETE_CONTACT',
+          payload: id,
+        })
+      );
   };
 
   render() {
